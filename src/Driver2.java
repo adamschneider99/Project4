@@ -79,6 +79,16 @@ public class Driver2
 		System.out.println(m.exists(friendless1));
 		System.out.println(m.hasFriendship(lewis, fannie));
 		
+		// New tests
+		
+		/*
+		System.out.println(m.hasFriendship(lewis, fannie));
+		m.removeFriendship(lewis, fannie);
+		System.out.println(m.hasFriendship(lewis, fannie));
+		*/
+		
+		
+		
 		System.out.println("---------------Suggestion----------------------------------");
 		Profile friendless2 = new Profile();
 		friendless2.setName("Nameless ", " 2");

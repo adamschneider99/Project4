@@ -42,6 +42,12 @@ public class VTConnect {
      * @return
      */
     public Profile removeUser(Profile p) {
+        // this doesn't remove the edges?
+        ArrayList<Profile> list = p.getFriendProfiles();
+        for (int i = p.getFriendProfiles().size() - 1; i >= 0; i--) {
+            Profile p2 = list.get(i);
+            removeFriendship(p, p2);
+        }
         return graph.removeVertex(p).getLabel();
     }
 
@@ -60,6 +66,10 @@ public class VTConnect {
         }
         a.addFriend(b);
         b.addFriend(a);
+        graph.addEdge(a,b);
+        graph.addEdge(b,a);
+        
+        // NEED TO CONENCT
         // CHANGE
         return true;
 
@@ -78,6 +88,8 @@ public class VTConnect {
         if (hasFriendship(a, b)) {
             a.unFriend(b);
             b.unFriend(a);
+            graph.removeEdge(a,b);
+            graph.removeEdge(b,a);
             return true;
         }
 
@@ -117,6 +129,7 @@ public class VTConnect {
         while (!queue.isEmpty()) {
             queue.poll().display();
         }
+        //System.out.println("\n");
     }
 
 
@@ -128,9 +141,10 @@ public class VTConnect {
      * @return
      */
     public boolean exists(Profile user) {
-        Queue<Profile> queue = graph.getBreadthFirstTraversal(user);
-        while (!queue.isEmpty()) {
-            if (queue.poll().equals(user)) {
+        List<VertexInterface<Profile>> allProfiles = graph.getVertices();
+        // Queue<Profile> queue = graph.getBreadthFirstTraversal(user);
+        for (VertexInterface<Profile> profile : allProfiles) {
+            if (profile.getLabel().equals(user)) {
                 return true;
             }
         }
@@ -151,19 +165,18 @@ public class VTConnect {
         if (user == null || !exists(user)) {
             return null;
         }
-        
+        List<Profile> res = new ArrayList<Profile>();
         Queue<Profile> queue = graph.getBreadthFirstTraversal(user);
         while (!queue.isEmpty()) {
-            Profile temp = queue.poll();
-            if (friendshipDistance(user, temp > );
-            
-                
+            Profile currProfile = queue.poll();
+            if (friendshipDistance(user, currProfile) == 2) {
+                res.add(currProfile);
             }
         }
-        
-        
-        
-
+        if (res.size() == 0) {
+            return null;
+        }
+        return res;
     }
 
 
@@ -180,8 +193,15 @@ public class VTConnect {
      * @return
      */
     public int friendshipDistance(Profile a, Profile b) {
+        if (!exists(a) || !exists(b)) {
+            return -1;
+        }
         Stack<Profile> path = new Stack<Profile>();
-        return graph.getShortestPath(a, b, path);
+        int res = graph.getShortestPath(a, b, path);
+        if (res == 0) {
+            return -1;
+        }
+        return res;
 
     }
 

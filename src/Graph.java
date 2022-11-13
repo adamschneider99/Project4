@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -121,10 +122,10 @@ public class Graph<T> implements GraphInterface<T> {
         VertexInterface<T> endVertex = vertices.get(end);
         
         if ((beginVertex != null) && (endVertex != null) ) {
-            result = beginVertex.connect(endVertex, edgeWeight);
+            result = beginVertex.disconnect(endVertex, edgeWeight);
         }
         if (result) {
-            edgeCount++;
+            edgeCount--;
         }
         return result;
         
@@ -217,8 +218,8 @@ public class Graph<T> implements GraphInterface<T> {
      */
     public List<VertexInterface<T>> getVertices() {
         // check
-        List<VertexInterface<T>> temp = (List<VertexInterface<T>>)vertices.values();
-        return temp;
+        List<VertexInterface<T>> list = new ArrayList<VertexInterface<T>>(vertices.values());
+        return list;
         
     }
 
@@ -240,29 +241,37 @@ public class Graph<T> implements GraphInterface<T> {
      * @return queue queue
      */
     public Queue<T> getBreadthFirstTraversal(T origin) {
+        if (origin == null) {
+            return new LinkedBlockingQueue<T>();
+        }
         resetVertices();
         Queue<T> traversalOrder = new LinkedBlockingQueue<T>();
-        Queue<VertexInterface<T>> vertexQueue = new LinkedBlockingQueue<VertexInterface<T>>();
-        
+        Queue<VertexInterface<T>> vertexQueue = 
+                                           new LinkedBlockingQueue<VertexInterface<T>>();
         VertexInterface<T> originVertex = vertices.get(origin);
         originVertex.visit();
-        traversalOrder.add(origin); // enqueue vertex label
+        traversalOrder.add(origin);    // enqueue vertex label
         vertexQueue.add(originVertex); // enqueue vertex
         
-        while (!vertexQueue.isEmpty()) {
-            VertexInterface<T> frontVertex = vertexQueue.remove();
-            Iterator<VertexInterface<T>> neighbors = frontVertex.getNeighborIterator();
-            while (neighbors.hasNext()) {
-                VertexInterface<T> nextNeighbor = neighbors.next();
-                if(!nextNeighbor.isVisited()) {
-                    nextNeighbor.visit();
-                    traversalOrder.add(nextNeighbor.getLabel());
-                    vertexQueue.add(nextNeighbor);
-                }
-            }
-        }
+        while (!vertexQueue.isEmpty())
+        {
+          VertexInterface<T> frontVertex = vertexQueue.remove();
+          
+          Iterator<VertexInterface<T>> neighbors = frontVertex.getNeighborIterator();
+          while (neighbors.hasNext())
+          {
+            VertexInterface<T> nextNeighbor = neighbors.next();
+            if (!nextNeighbor.isVisited())
+            {
+              nextNeighbor.visit();
+              traversalOrder.add(nextNeighbor.getLabel());
+              vertexQueue.add(nextNeighbor);
+            } // end if
+          } // end while
+        } // end while
+        
         return traversalOrder;
-    }
+      } // end getBreadthFirstTraversal
 
 
     /**

@@ -104,7 +104,7 @@ public class Profile {
      */
     public String toString() {
         return "Name: " + this.name + "\n\tStatus: " + this.status
-            + "\n\tNumber of friend profiles: " + friendProfiles.size() + "\n";
+            + "\n\tNumber of friend profiles: " + friendProfiles.size();
     }
 
 
@@ -114,6 +114,19 @@ public class Profile {
      */
     public void display() {
         System.out.println(this.toString());
+        System.out.println("Friends:");
+        for (Profile currProfile : friendProfiles) {
+            System.out.println("\t" + currProfile.name);
+            // System.out.println("");
+            // currProfile.display();
+        }
+        for (Profile currProfile : friendProfiles) {
+            currProfile.toString();
+            // currProfile.display();
+        }   
+        if (friendProfiles.size() != 0) {
+            System.out.println("");
+        }
     }
 
 
