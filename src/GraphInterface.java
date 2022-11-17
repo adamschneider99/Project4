@@ -153,7 +153,7 @@ public interface GraphInterface<T> {
      * @param origin
      * @param destination
      * @param path
-     * @return
+     * @return int path length
      */
     public int getShortestPath(T origin, T destination, Stack<T> path);
 }

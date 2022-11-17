@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  * @author Adam Schneider
  * @version 2022-11-11
+ *          SOURCE: A large portion of this was taken from the lecture
  *
  */
 public class Profile {
@@ -16,7 +17,7 @@ public class Profile {
     private ArrayList<Profile> friendProfiles;
 
     /**
-     * 
+     * Constructor
      */
     public Profile() {
         this.name = "";
@@ -29,8 +30,11 @@ public class Profile {
      * initializes the attributes with the accepted valued.
      * 
      * @param name
+     *            name
      * @param status
+     *            the status of the profile
      * @param friendProfiles
+     *            list of friends
      */
     public Profile(
         String name,
@@ -47,7 +51,9 @@ public class Profile {
      * attribute with a default arraylist object.
      * 
      * @param name
+     *            of person
      * @param status
+     *            of the person
      */
     public Profile(String name, String status) {
         this.name = name;
@@ -59,6 +65,7 @@ public class Profile {
      * - the setter method for the name attribute that accepts the first and
      * last name of the user and set the name attribute with firstName +” “
      * +lastName (Note the space between the two names).
+     * O(1)
      * 
      * @param firstName
      * @param lastName
@@ -70,6 +77,7 @@ public class Profile {
 
     /**
      * - the getter method for the name attribute.
+     * O(1)
      */
     public String getName() {
         return name;
@@ -78,6 +86,7 @@ public class Profile {
 
     /**
      * setter method
+     * O(1)
      * 
      * @param status
      */
@@ -88,6 +97,7 @@ public class Profile {
 
     /**
      * getter method
+     * O(1)
      * 
      * @return status
      */
@@ -101,37 +111,34 @@ public class Profile {
      * displays the string in the following format.
      * "Name: " + name + "\n\tStatus: " + status + “\n\tNumber of friend
      * profiles: " + friend’s number + "\n"
+     * 
+     * O(1)
      */
     public String toString() {
         return "Name: " + this.name + "\n\tStatus: " + this.status
-            + "\n\tNumber of friend profiles: " + friendProfiles.size();
+            + "\n\tNumber of friend profiles: " + friendProfiles.size() + "\n";
     }
 
 
     /**
      * - displays the profile and the friends profiles. Take a look at the
      * sample run to see the format of display.
+     * O(n)
      */
     public void display() {
-        System.out.println(this.toString());
+        System.out.println("Name: " + this.name + "\n\tStatus: " + this.status
+            + "\n\tNumber of friend profiles: " + friendProfiles.size());
         System.out.println("Friends:");
+        // List all of the current profiles friends
         for (Profile currProfile : friendProfiles) {
             System.out.println("\t" + currProfile.name);
-            // System.out.println("");
-            // currProfile.display();
-        }
-        for (Profile currProfile : friendProfiles) {
-            currProfile.toString();
-            // currProfile.display();
-        }   
-        if (friendProfiles.size() != 0) {
-            System.out.println("");
         }
     }
 
 
     /**
      * - add a new friend to the friends list.
+     * O(n)
      * 
      * @param user
      */
@@ -142,6 +149,7 @@ public class Profile {
 
     /**
      * @return the friendProfiles
+     *         O(1)
      */
     public ArrayList<Profile> getFriendProfiles() {
         return friendProfiles;
@@ -150,6 +158,7 @@ public class Profile {
 
     /**
      * - the getter method for the friendProfiles attribute.
+     * O(1)
      * 
      * @param friendProfiles
      *            the friendProfiles to set
@@ -162,6 +171,7 @@ public class Profile {
     /**
      * - removes an existing friend from the list of friends. returns true if
      * the removal of the profile is successful, false otherwise.
+     * O(n)
      * 
      * @param user
      * @return bool true if succesful
