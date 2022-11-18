@@ -45,6 +45,9 @@ public class VTConnect {
      * @return profile of removed user
      */
     public Profile removeUser(Profile p) {
+        if (!exists(p)) {
+            return null;
+        }
         ArrayList<Profile> list = p.getFriendProfiles();
         for (int i = p.getFriendProfiles().size() - 1; i >= 0; i--) {
             Profile p2 = list.get(i);
@@ -64,6 +67,9 @@ public class VTConnect {
      * @return boolean true if the friendship is created successfully
      */
     public boolean createFriendship(Profile a, Profile b) {
+        if (!exists(a) || !exists(b)) {
+            return false;
+        }
         if (hasFriendship(a, b)) {
             return false;
         }
@@ -87,6 +93,10 @@ public class VTConnect {
      * @return boolean true if friendship was successfully removed
      */
     public boolean removeFriendship(Profile a, Profile b) {
+        if (!exists(a) || !exists(b)) {
+            return false;
+        }
+        
         if (hasFriendship(a, b)) {
             a.unFriend(b);
             b.unFriend(a);
@@ -110,6 +120,9 @@ public class VTConnect {
      * @return boolean true if there is friendship between Profiles a and b
      */
     public boolean hasFriendship(Profile a, Profile b) {
+        if (!exists(a) || !exists(b)) {
+            return false;
+        }
         ArrayList<Profile> list = a.getFriendProfiles();
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).equals(b)) {

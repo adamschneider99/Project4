@@ -159,7 +159,7 @@ public class Vertex<T> implements VertexInterface<T> {
         boolean result = false;
 
         if (!this.equals(endVertex)) {
-            for (int i = 0; i < edgeList.size() - 1; i++) {
+            for (int i = 0; i < edgeList.size(); i++) {
                 Edge<T> currEdge = edgeList.get(i);
                 if (currEdge.getEndVertex().equals(endVertex)) {
                     // found edge

@@ -45,7 +45,9 @@ public class Graph<T> implements GraphInterface<T> {
      * @return boolean if the vertex was added successfully
      */
     public boolean addVertex(T vertexLabel) {
-
+        if (vertexLabel == null) {
+            return false;
+        }
         VertexInterface<T> addOutcome = vertices.put(vertexLabel, new Vertex<T>(
             vertexLabel));
         return addOutcome == null;
@@ -83,14 +85,18 @@ public class Graph<T> implements GraphInterface<T> {
      * @return boolean true edge was added
      */
     public boolean addEdge(T begin, T end, double edgeWeight) {
-
+        // Note representing undirected edges as two seperate edges back and
+        // forth
         boolean result = false;
         VertexInterface<T> beginVertex = vertices.get(begin);
         VertexInterface<T> endVertex = vertices.get(end);
 
         // if the vertex isnt null, connect the start and end
         if ((beginVertex != null) && (endVertex != null)) {
-            result = beginVertex.connect(endVertex, edgeWeight);
+            if (!hasEdge(begin, end)) {
+                result = beginVertex.connect(endVertex, edgeWeight);
+            }
+
         }
         // if the connection was successful, iterate the edgeCount
         if (result) {
@@ -139,7 +145,9 @@ public class Graph<T> implements GraphInterface<T> {
         VertexInterface<T> endVertex = vertices.get(end);
         // disconnect as long as neither vertex is null
         if ((beginVertex != null) && (endVertex != null)) {
-            result = beginVertex.disconnect(endVertex, edgeWeight);
+            if (hasEdge(begin, end)) {
+                result = beginVertex.disconnect(endVertex, edgeWeight);
+            }
         }
         if (result) {
             edgeCount--;
@@ -237,6 +245,9 @@ public class Graph<T> implements GraphInterface<T> {
      * @return a list of all the vertices in the graph
      */
     public List<VertexInterface<T>> getVertices() {
+        if (isEmpty()) {
+            return null;
+        }
         List<VertexInterface<T>> list = new ArrayList<VertexInterface<T>>(
             vertices.values());
         return list;
